@@ -1,0 +1,15 @@
+{
+  "name": "z-web",
+  "version": "1.0.0",
+  "description": "Z Web by Eore",
+  "main": "app.js",
+  "author": "Eore",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/app"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1"
+  }
+}
