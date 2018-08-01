@@ -1,25 +1,26 @@
-let Database = require("../deps/database/operations");
+let db = require("../../deps/database");
+let { encrypt } = require("../../deps/encryption");
 
-class User extends Database {
+let validator = (username, password, nama, email) =>
+  /(\w+){4,}/g.test(username) &&
+  /(\w+){6,}/g.test(password) &&
+  /(\w+){1,}/g.test(nama) &&
+  /(\w+)\@(\w+)\.(\w+)/g.test(email);
+
+class User {
   constructor({
     username = new String(),
     password = new String(),
     nama = new String(),
     email = new String()
   }) {
-    super();
-    this.collectionName = "user";
-    this.validInput = false;
-    if (
-      /(\w+){4,}/g.test(username) &&
-      /(\w+){6,}/g.test(password) &&
-      /(\w+){1,}/g.test(nama) &&
-      /(\w+)\@(\w+)\.(\w+)/g.test(email)
-    ) {
-      this.validInput = true;
+    if (validator(username, password, nama, email)) {
+      db("user").then(col =>
+        col.createIndex({ username: 1 }, { unique: true })
+      );
       this.data = {
         username,
-        password,
+        password: encrypt(password),
         nama,
         email,
         role: "user"
@@ -27,10 +28,6 @@ class User extends Database {
     } else {
       console.error("Input salah");
     }
-  }
-
-  userAdd() {
-    if (this.validInput) this.insert(this.data);
   }
 }
 
