@@ -1,8 +1,7 @@
-let db = require("../../../deps/database");
+let read = require("../../method/read");
 
 module.exports = (req, res, next) => {
-  db("user")
-    .then(col => col.find().toArray())
+  read("user")
     .then(list => {
       list = list.map(el => {
         let { password, ...rest } = el;
@@ -10,5 +9,5 @@ module.exports = (req, res, next) => {
       });
       res.status(200).json(list);
     })
-    .catch(() => next("get list error"));
+    .catch(() => next("get list failed"));
 };
