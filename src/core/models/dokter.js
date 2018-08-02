@@ -1,4 +1,11 @@
-let db = require("../../deps/database");
+let db = require("../../libs/database");
+
+let validator = (nama, spesialis) =>
+  !/(\w+){1,}/g.test(nama)
+    ? "input nama dokter salah"
+    : !/(\w+){1,}/g.test(spesialis)
+      ? "input spesialis salah"
+      : true;
 
 class Dokter {
   constructor({
@@ -6,7 +13,8 @@ class Dokter {
     spesialis = new String(),
     jadwal = new Array()
   }) {
-    if (/(\w+){1,}/g.test(nama) && /(\w+){1,}/g.test(spesialis)) {
+    let valid = validator(nama, validator);
+    if (valid === true) {
       db("dokter").then(col => col.createIndex({ nama: 1 }));
       this.data = {
         nama,
@@ -14,7 +22,7 @@ class Dokter {
         jadwal
       };
     } else {
-      console.error("Input salah");
+      console.error(valid);
     }
   }
 }
