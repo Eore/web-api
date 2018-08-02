@@ -1,31 +1,10 @@
-let db = require("../../../deps/database");
+let find = require("../../method/find");
+let checkToken = require("../../checkToken");
 let ObjectID = require("mongodb").ObjectID;
-let { verifyToken } = require("../../../deps/token");
 
 module.exports = (req, res, next) => {
-  let token = req.headers.user_token;
-  let plain;
-  try {
-    plain = verifyToken(token);
-  } catch (error) {
-    next("token expired");
-  }
-  db("user")
-    .then(col => {
-      col
-        .findOne({ _id: new ObjectID(plain._id) })
-        .then(
-          found =>
-            found.username === req.params.username ? found : Promise.reject()
-        );
-      return col;
-    })
-    .then(col => {
-      return col.findOne({ username: req.params.username });
-    })
-    .then(list => {
-      let { password, ...rest } = list;
-      res.status(200).json(rest);
-    })
-    .catch(() => next("get list error"));
+  let { _id } = checkToken(req, res);
+  find("user", { _id: ObjectID(_id) })
+    .then(user => res.status(200).json({ ...user, password: "*secret*" }))
+    .catch(() => next("get user failed"));
 };
