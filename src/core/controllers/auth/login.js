@@ -1,6 +1,6 @@
-let db = require("../../../deps/database");
-let { encrypt } = require("../../../deps/encryption");
-let { genToken } = require("../../../deps/token");
+let db = require("../../../libs/database");
+let { encrypt } = require("../../../libs/encryption");
+let { genToken } = require("../../../libs/token");
 
 module.exports = (req, res, next) => {
   let username = req.body.username;
@@ -14,5 +14,5 @@ module.exports = (req, res, next) => {
         res.status(403).json("username/password salah");
       }
     })
-    .catch(() => next("get list error"));
+    .catch(() => next("login failed"));
 };
