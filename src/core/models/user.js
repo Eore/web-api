@@ -1,11 +1,16 @@
-let db = require("../../deps/database");
-let { encrypt } = require("../../deps/encryption");
+let db = require("../../libs/database");
+let { encrypt } = require("../../libs/encryption");
 
 let validator = (username, password, nama, email) =>
-  /(\w+){4,}/g.test(username) &&
-  /(\w+){6,}/g.test(password) &&
-  /(\w+){1,}/g.test(nama) &&
-  /(\w+)\@(\w+)\.(\w+)/g.test(email);
+  !/(\w+){4,}/g.test(username)
+    ? "input username salah"
+    : !/(\w+){6,}/g.test(password)
+      ? "input password salah"
+      : !/(\w+){1,}/g.test(nama)
+        ? "input nama salah"
+        : !/(\w+)\@(\w+)\.(\w+)/g.test(email)
+          ? "input email salah"
+          : true;
 
 class User {
   constructor({
@@ -14,7 +19,8 @@ class User {
     nama = new String(),
     email = new String()
   }) {
-    if (validator(username, password, nama, email)) {
+    let valid = validator(username, password, nama, email);
+    if (valid === true) {
       db("user").then(col =>
         col.createIndex({ username: 1 }, { unique: true })
       );
@@ -26,7 +32,7 @@ class User {
         role: "user"
       };
     } else {
-      console.error("Input salah");
+      console.error(valid);
     }
   }
 }
