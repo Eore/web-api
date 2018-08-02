@@ -3,12 +3,12 @@ module.exports = [
     method: "POST",
     url: "/login",
     controller: "auth/login",
-    privillage: ["guest"]
+    privillage: ["*"]
   },
   {
     method: "GET",
     url: "/refresh-token",
     controller: "auth/refreshToken",
-    privillage: ["guest"]
+    privillage: ["*"]
   }
 ];
