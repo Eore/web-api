@@ -9,18 +9,18 @@ module.exports = [
     method: "GET",
     url: "/user/:username",
     controller: "user/find",
-    privillage: ["admin"]
+    privillage: ["user", "admin"]
   },
   {
     method: "POST",
     url: "/user",
     controller: "user/add",
-    privillage: ["guest"]
+    privillage: ["*"]
   },
   {
     method: "PUT",
-    url: "/user/:username",
+    url: "/user",
     controller: "user/edit",
-    privillage: ["user"]
+    privillage: ["user", "admin"]
   }
 ];
