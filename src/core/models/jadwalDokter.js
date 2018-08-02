@@ -1,17 +1,27 @@
-let db = require("../../deps/database");
+let db = require("../../libs/database");
+let ObjectID = require("mongodb").ObjectID;
 
-let validator = (start, end) => {
-  let regex = /(\d+){2,2}\.(\d+){2,2}/g;
-  return regex.test(start) && regex.test(end);
-};
+let validator = (hari, mulai, selesai) =>
+  !/(\w+){1,}/g.test(hari)
+    ? "input hari salah"
+    : !/(\d+){2,2}\.(\d+){2,2}/g.test(mulai)
+      ? "input mulai salah"
+      : !/(\d+){2,2}\.(\d+){2,2}/g.test(selesai)
+        ? "input selesai salah"
+        : true;
 
 class JadwalDokter {
-  constructor({ start = new String(), end = new String() }) {
-    if (validator(start, end)) {
-      db("dokter").then(col => col.createIndex({ nama: 1 }));
-      this.data = { nama, spesialis, jadwal };
+  constructor({
+    hari = new String(),
+    mulai = new String(),
+    selesai = new String()
+  }) {
+    let valid = validator(hari, mulai, selesai);
+    if (valid === true) {
+      db("jadwalDokter").then(col => col.createIndex({ hari: 1, mulai: 1 }));
+      this.data = { _id: ObjectID(), hari, mulai, selesai };
     } else {
-      console.error("Input salah");
+      console.error(valid);
     }
   }
 }
