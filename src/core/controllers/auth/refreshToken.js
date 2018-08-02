@@ -1,5 +1,4 @@
-let db = require("../../../deps/database");
-let { genToken, verifyToken } = require("../../../deps/token");
+let { genToken, verifyToken } = require("../../../libs/token");
 
 module.exports = (req, res, next) => {
   try {
