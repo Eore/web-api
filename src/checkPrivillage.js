@@ -1,4 +1,4 @@
-let db = require("../libs/database");
+let db = require("./libs/database");
 let ObjectID = require("mongodb").ObjectID;
 let checkToken = require("./checkToken");
 

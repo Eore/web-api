@@ -1,4 +1,4 @@
-let db = require("../../libs/database");
+let db = require("../libs/database");
 
 module.exports = ({ modelSourceName, modelToPush, field, where, data }) => {
   return db(modelSourceName).then(col => {

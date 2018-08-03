@@ -1,6 +1,6 @@
-let db = require("../../../libs/database");
-let { encrypt } = require("../../../libs/encryption");
-let { genToken } = require("../../../libs/token");
+let db = require("../../libs/database");
+let { encrypt } = require("../../libs/encryption");
+let { genToken } = require("../../libs/token");
 
 module.exports = (req, res, next) => {
   let username = req.body.username;

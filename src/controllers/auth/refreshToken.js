@@ -1,4 +1,4 @@
-let { genToken, verifyToken } = require("../../../libs/token");
+let { genToken, verifyToken } = require("../../libs/token");
 
 module.exports = (req, res, next) => {
   try {
