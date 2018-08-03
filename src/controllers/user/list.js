@@ -1,4 +1,4 @@
-let read = require("../../method/read");
+let read = require("../../methods/read");
 
 module.exports = (req, res, next) => {
   read("user")
