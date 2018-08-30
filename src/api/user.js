@@ -1,20 +1,20 @@
 module.exports = [
   {
     method: "GET",
-    url: "/user",
-    controller: "user/list",
+    url: "/api/v1/user",
+    controller: "user/listUser",
     privillage: ["admin"]
   },
   {
     method: "GET",
-    url: "/user/:username",
-    controller: "user/find",
+    url: "/api/v1/user/:username",
+    controller: "user/cariUser",
     privillage: ["user", "admin"]
   },
   {
     method: "POST",
-    url: "/user",
-    controller: "user/add",
+    url: "/api/v1/user",
+    controller: "user/tambahUser",
     privillage: ["*"]
   },
   {

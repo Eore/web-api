@@ -16,3 +16,8 @@ class Dokter {
 }
 
 module.exports = Dokter;
+
+exports.Dokter = {
+  nama: /^[A-z, ]{1,}$/,
+  spesialis: /^[A-z, ]{1,}$/
+};

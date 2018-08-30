@@ -1,18 +1,16 @@
-let db = require("../../libs/database");
-let { encrypt } = require("../../libs/encryption");
-let { genToken } = require("../../libs/token");
+let { cariUserByUsername } = require("../../repository/user");
+let { check } = require("../../module/encryption");
+let { genToken } = require("../../module/token");
 
-module.exports = (req, res, next) => {
-  let username = req.body.username;
-  let password = encrypt(req.body.password);
-  db("user")
-    .then(col => col.findOne({ username, password }))
-    .then(user => {
-      if (user) {
-        res.status(200).json(genToken({ _id: user._id, nama: user.nama }));
-      } else {
-        res.status(403).json("username/password salah");
-      }
-    })
-    .catch(() => res.status(400).json("login failed"));
+module.exports = (req, res) => {
+  let { username, password } = req.body;
+  cariUserByUsername(username)
+    .then(user => (user ? user : Promise.reject()))
+    .then(
+      user =>
+        check(password, user.password)
+          ? res.status(200).json(genToken(user))
+          : res.status(401).json("password salah")
+    )
+    .catch(() => res.status(400).json("username tidak ada"));
 };

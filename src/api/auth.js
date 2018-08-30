@@ -1,7 +1,7 @@
 module.exports = [
   {
     method: "POST",
-    url: "/login",
+    url: "/api/v1/login",
     controller: "auth/login",
     privillage: ["*"]
   },
