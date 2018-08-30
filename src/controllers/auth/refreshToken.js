@@ -6,6 +6,6 @@ module.exports = (req, res, next) => {
     let data = verifyToken(token);
     res.status(200).json(genToken({ _id: data._id, nama: data.nama }));
   } catch (error) {
-    next("token not valid");
+    res.status(400).json("token not valid");
   }
 };

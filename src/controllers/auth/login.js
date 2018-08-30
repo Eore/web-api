@@ -14,5 +14,5 @@ module.exports = (req, res, next) => {
         res.status(403).json("username/password salah");
       }
     })
-    .catch(() => next("login failed"));
+    .catch(() => res.status(400).json("login failed"));
 };

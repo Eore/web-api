@@ -13,6 +13,7 @@ module.exports = role => (req, res, next) => {
         role.map(el => (el === user.role ? true : false)).indexOf(true) !== -1
           ? next()
           : res.status(401).json("not authorize");
-      });
+      })
+      .catch(err => console.log(err));
   }
 };
