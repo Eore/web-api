@@ -19,8 +19,8 @@ module.exports = [
   },
   {
     method: "PUT",
-    url: "/user",
-    controller: "user/edit",
+    url: "/api/v1/user",
+    controller: "user/editUser",
     privillage: ["user", "admin"]
   }
 ];

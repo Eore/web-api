@@ -9,7 +9,7 @@ module.exports = (req, res) => {
     .then(
       user =>
         check(password, user.password)
-          ? res.status(200).json(genToken(user))
+          ? res.status(200).json(genToken({ _id: user._id, nama: user.nama }))
           : res.status(401).json("password salah")
     )
     .catch(() => res.status(400).json("username tidak ada"));

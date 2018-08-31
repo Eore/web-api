@@ -20,21 +20,26 @@ exports.tambahUser = ({ username, password, nama, email }) => {
     : Promise.reject("invalid data");
 };
 
-exports.editUser = (idUser, newData) => {
-  db("user")
-    .then(
-      col => (
-        col,
-        col.findOne({ _id: ObjectID(idUser) }).then(user => {
-          Object.keys(newData).forEach(key => (user[key] = newData[key]));
-          return user;
-        })
+exports.editUser = (idUser, newData) =>
+  db("user").then(col =>
+    col
+      .findOne({ _id: ObjectID(idUser) })
+      .then(user => {
+        Object.keys(newData).forEach(key => {
+          if (key === "password") user[key] = encrypt(newData[key]);
+          else user[key] = newData[key];
+        });
+        return user;
+      })
+      .then(user =>
+        col.findOneAndUpdate({ _id: ObjectID(idUser) }, { $set: user })
       )
-    )
-    .then((col, user) => col.findOneAndUpdate({ _id: ObjectID(idUser) }, user));
-};
+  );
 
 exports.listUser = () => db("user").then(col => col.find().toArray());
 
 exports.cariUserByUsername = username =>
   db("user").then(col => col.findOne({ username }));
+
+exports.cariUserById = idUser =>
+  db("user").then(col => col.findOne({ _id: ObjectID(idUser) }));

@@ -7,7 +7,7 @@ module.exports = [
   },
   {
     method: "GET",
-    url: "/refresh-token",
+    url: "/api/v1/refresh-token",
     controller: "auth/refreshToken",
     privillage: ["*"]
   }

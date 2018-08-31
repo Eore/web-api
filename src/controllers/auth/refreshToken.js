@@ -1,11 +1,11 @@
-let { genToken, verifyToken } = require("../../libs/token");
+let { genToken, verifyToken } = require("../../module/token");
 
-module.exports = (req, res, next) => {
+module.exports = (req, res) => {
+  let token = req.headers.user_token;
   try {
-    let token = req.headers.user_token;
     let data = verifyToken(token);
     res.status(200).json(genToken({ _id: data._id, nama: data.nama }));
   } catch (error) {
-    res.status(400).json("token not valid");
+    res.status(400).json("token tidak valid");
   }
 };
