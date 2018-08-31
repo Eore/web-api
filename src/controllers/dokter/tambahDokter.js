@@ -13,6 +13,6 @@ module.exports = (req, res) => {
     spesialis,
     jadwal
   })
-    .then(doc => res.status(201).json(doc))
+    .then(doc => res.status(201).json(doc.ops[0]))
     .catch(() => res.status(400).json("gagal menambah dokter"));
 };

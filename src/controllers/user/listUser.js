@@ -1,7 +1,8 @@
 let { listUser } = require("../../repository/user");
 
 module.exports = (req, res) => {
-  listUser()
+  let { username } = req.params;
+  listUser(username ? username : null)
     .then(user => {
       user = user.map(({ username, nama, email, role }) => {
         return {
@@ -11,7 +12,7 @@ module.exports = (req, res) => {
           role
         };
       });
-      res.status(201).json(user);
+      res.status(200).json(user);
     })
     .catch(err => res.status(400).json(err));
 };

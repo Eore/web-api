@@ -25,21 +25,25 @@ exports.editUser = (idUser, newData) =>
     col
       .findOne({ _id: ObjectID(idUser) })
       .then(user => {
-        Object.keys(newData).forEach(key => {
-          if (key === "password") user[key] = encrypt(newData[key]);
-          else user[key] = newData[key];
-        });
-        return user;
+        if (user) {
+          Object.keys(newData).forEach(key => {
+            if (key === "password") user[key] = encrypt(newData[key]);
+            else user[key] = newData[key];
+          });
+          return user;
+        } else {
+          return Promise.reject("user tidak ditemukan");
+        }
       })
       .then(user =>
         col.findOneAndUpdate({ _id: ObjectID(idUser) }, { $set: user })
       )
   );
 
-exports.listUser = () => db("user").then(col => col.find().toArray());
-
-exports.cariUserByUsername = username =>
-  db("user").then(col => col.findOne({ username }));
+exports.listUser = username =>
+  db("user").then(
+    col => (username ? col.findOne({ username }) : col.find().toArray())
+  );
 
 exports.cariUserById = idUser =>
   db("user").then(col => col.findOne({ _id: ObjectID(idUser) }));

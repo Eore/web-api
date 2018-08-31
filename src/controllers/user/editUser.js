@@ -9,7 +9,7 @@ module.exports = (req, res) => {
     .then(user => (user ? Promise.resolve() : Promise.reject()))
     .then(() =>
       editUser(_id, data)
-        .then(doc => res.status(201).json(doc.value))
+        .then(doc => res.status(200).json(doc.value))
         .catch(() => res.status(400).json("gagal mengedit user"))
     )
     .catch(() => res.status(400).json("token tidak valid"));

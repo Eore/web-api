@@ -1,10 +1,10 @@
-let { cariUserByUsername } = require("../../repository/user");
+let { listUser } = require("../../repository/user");
 let { check } = require("../../module/encryption");
 let { genToken } = require("../../module/token");
 
 module.exports = (req, res) => {
   let { username, password } = req.body;
-  cariUserByUsername(username)
+  listUser(username)
     .then(user => (user ? user : Promise.reject()))
     .then(
       user =>

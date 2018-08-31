@@ -1,8 +1,8 @@
-let { tambahUser, cariUserByUsername } = require("../../repository/user");
+let { tambahUser, listUser } = require("../../repository/user");
 
 module.exports = (req, res) => {
   let { username, password, nama, email } = req.body;
-  cariUserByUsername(username)
+  listUser(username)
     .then(user => (!user ? Promise.resolve() : Promise.reject()))
     .then(() =>
       tambahUser({

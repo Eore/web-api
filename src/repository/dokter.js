@@ -3,6 +3,13 @@ let ObjectID = require("mongodb").ObjectID;
 let { Dokter } = require("../models/dokter");
 
 exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
+  jadwal = jadwal.map(val => {
+    return {
+      _id: ObjectID(),
+      ...val
+    };
+  });
+
   let testJadwal =
     jadwal
       .map(
@@ -18,33 +25,38 @@ exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
   return Dokter.nama.test(nama) &&
     Dokter.spesialis.test(spesialis) &&
     testJadwal
-    ? db("user").then(col =>
+    ? db("dokter").then(col =>
         col.insert({
-          username,
-          password: encrypt(password),
           nama,
-          email,
-          role: "user"
+          spesialis,
+          jadwal
         })
       )
-    : Promise.reject("invalid data");
+    : Promise.reject("input salah");
 };
 
-exports.editUser = (idUser, newData) => {
-  db("user")
-    .then(
-      col => (
-        col,
-        col.findOne({ _id: ObjectID(idUser) }).then(user => {
-          Object.keys(newData).forEach(key => (user[key] = newData[key]));
-          return user;
-        })
+exports.editDokter = (idDokter, newData) =>
+  db("dokter").then(col =>
+    col
+      .findOne({ _id: ObjectID(idDokter) })
+      .then(dokter => {
+        if (dokter) {
+          Object.keys(newData).forEach(key => (dokter[key] = newData[key]));
+          return dokter;
+        } else {
+          return Promise.reject("dokter tidak ditemukan");
+        }
+      })
+      .then(dokter =>
+        col.findOneAndUpdate({ _id: ObjectID(idDokter) }, { $set: dokter })
       )
-    )
-    .then((col, user) => col.findOneAndUpdate({ _id: ObjectID(idUser) }, user));
-};
+  );
 
-exports.listUser = () => db("user").then(col => col.find().toArray());
+exports.listDokter = idDokter =>
+  db("dokter").then(
+    col =>
+      idDokter ? col.findOne({ _id: ObjectID(idDokter) }) : col.find().toArray()
+  );
 
-exports.cariUserByUsername = username =>
-  db("user").then(col => col.findOne({ username }));
+exports.hapusDokter = idDokter =>
+  db("dokter").then(col => col.findOneAndDelete({ _id: ObjectID(idDokter) }));
