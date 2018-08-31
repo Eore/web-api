@@ -1,32 +1,26 @@
 module.exports = [
   {
     method: "GET",
-    url: "/dokter",
-    controller: "dokter/list",
-    privillage: ["*"]
-  },
-  {
-    method: "GET",
-    url: "/dokter/:id_dokter",
-    controller: "dokter/find",
+    url: "/api/v1/dokter/:id_dokter?",
+    controller: "dokter/listDokter",
     privillage: ["*"]
   },
   {
     method: "POST",
-    url: "/dokter",
-    controller: "dokter/add",
-    privillage: ["admin"]
+    url: "/api/v1/dokter",
+    controller: "dokter/tambahDokter",
+    privillage: ["*"]
   },
-  // {
-  //   method: "PUT",
-  //   url: "/user/:username",
-  //   controller: "user/edit",
-  //   privillage: ["user"]
-  // }
+  {
+    method: "PUT",
+    url: "/api/v1/dokter/:id_dokter",
+    controller: "dokter/editDokter",
+    privillage: ["user"]
+  },
   {
     method: "DELETE",
-    url: "/dokter/:id_dokter",
-    controller: "dokter/delete",
+    url: "/api/v1/dokter/:id_dokter",
+    controller: "dokter/hapusDokter",
     privillage: ["admin"]
   }
 ];
