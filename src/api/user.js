@@ -1,14 +1,8 @@
 module.exports = [
-  // {
-  //   method: "GET",
-  //   url: "/api/v1/user",
-  //   controller: "user/listUser",
-  //   privillage: ["admin"]
-  // },
   {
     method: "GET",
     url: "/api/v1/user/:username?",
-    controller: "user/cariUser",
+    controller: "user/listUser",
     privillage: ["user", "admin"]
   },
   {
