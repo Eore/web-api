@@ -1,3 +1,6 @@
-let { startServer } = require("./module/server");
+let server = require("./module/server");
+let db = require("./module/database");
 
-startServer();
+db.connect().then(() => {
+  server.start();
+});
