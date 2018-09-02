@@ -41,8 +41,8 @@ exports.editUser = (idUser, newData) =>
   );
 
 exports.listUser = username =>
-  connection("user").then(
-    col => (username ? col.find({ username }).toArray() : col.find().toArray())
+  connection("user").then(col =>
+    col.find(username ? { username } : null).toArray()
   );
 
 exports.cariUserById = idUser =>

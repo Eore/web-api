@@ -53,11 +53,8 @@ exports.editDokter = (idDokter, newData) =>
   );
 
 exports.listDokter = idDokter =>
-  connection("dokter").then(
-    col =>
-      idDokter
-        ? col.find({ _id: ObjectID(idDokter) }).toArray()
-        : col.find().toArray()
+  connection("dokter").then(col =>
+    col.find(idDokter ? { _id: ObjectID(idDokter) } : null).toArray()
   );
 
 exports.hapusDokter = idDokter =>
