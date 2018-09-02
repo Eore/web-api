@@ -1,4 +1,4 @@
-let db = require("../module/database");
+let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { User } = require("../models/user");
 let { encrypt } = require("../module/encryption");
@@ -8,7 +8,7 @@ exports.tambahUser = ({ username, password, nama, email }) => {
     User.password.test(password) &&
     User.email.test(email) &&
     User.nama.test(nama)
-    ? db("user").then(col =>
+    ? connection("user").then(col =>
         col.insert({
           username,
           password: encrypt(password),
@@ -21,7 +21,7 @@ exports.tambahUser = ({ username, password, nama, email }) => {
 };
 
 exports.editUser = (idUser, newData) =>
-  db("user").then(col =>
+  connection("user").then(col =>
     col
       .findOne({ _id: ObjectID(idUser) })
       .then(user => {
@@ -41,9 +41,9 @@ exports.editUser = (idUser, newData) =>
   );
 
 exports.listUser = username =>
-  db("user").then(
-    col => (username ? col.findOne({ username }) : col.find().toArray())
+  connection("user").then(
+    col => (username ? col.find({ username }).toArray() : col.find().toArray())
   );
 
 exports.cariUserById = idUser =>
-  db("user").then(col => col.findOne({ _id: ObjectID(idUser) }));
+  connection("user").then(col => col.findOne({ _id: ObjectID(idUser) }));

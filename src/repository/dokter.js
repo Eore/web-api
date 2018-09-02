@@ -1,4 +1,4 @@
-let db = require("../module/database");
+let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { Dokter } = require("../models/dokter");
 
@@ -25,7 +25,7 @@ exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
   return Dokter.nama.test(nama) &&
     Dokter.spesialis.test(spesialis) &&
     testJadwal
-    ? db("dokter").then(col =>
+    ? connection("dokter").then(col =>
         col.insert({
           nama,
           spesialis,
@@ -36,7 +36,7 @@ exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
 };
 
 exports.editDokter = (idDokter, newData) =>
-  db("dokter").then(col =>
+  connection("dokter").then(col =>
     col
       .findOne({ _id: ObjectID(idDokter) })
       .then(dokter => {
@@ -53,10 +53,14 @@ exports.editDokter = (idDokter, newData) =>
   );
 
 exports.listDokter = idDokter =>
-  db("dokter").then(
+  connection("dokter").then(
     col =>
-      idDokter ? col.findOne({ _id: ObjectID(idDokter) }) : col.find().toArray()
+      idDokter
+        ? col.find({ _id: ObjectID(idDokter) }).toArray()
+        : col.find().toArray()
   );
 
 exports.hapusDokter = idDokter =>
-  db("dokter").then(col => col.findOneAndDelete({ _id: ObjectID(idDokter) }));
+  connection("dokter").then(col =>
+    col.findOneAndDelete({ _id: ObjectID(idDokter) })
+  );

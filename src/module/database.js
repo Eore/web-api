@@ -7,14 +7,17 @@ let dbName = env.DB_NAME || `zweb`;
 let user =
   env.DB_USERNAME !== undefined ? `${env.DB_USERNAME}:${env.DB_PASSWORD}@` : ``;
 
-let connection = collection => {
+var dbConnection;
+
+exports.connect = () => {
   return mongodb
     .connect(
       `mongodb://${user + dbHost}:${dbPort}/${dbName}`,
       { useNewUrlParser: true }
     )
-    .then(con => con.db(dbName).collection(collection))
+    .then(con => (dbConnection = con))
     .catch(() => console.error("Koneksi ke database gagal"));
 };
 
-module.exports = connection;
+exports.connection = collection =>
+  Promise.resolve(dbConnection.db(dbName).collection(collection));
