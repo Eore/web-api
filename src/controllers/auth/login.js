@@ -8,8 +8,10 @@ module.exports = (req, res) => {
     .then(user => (user ? user : Promise.reject()))
     .then(
       user =>
-        check(password, user.password)
-          ? res.status(200).json(genToken({ _id: user._id, nama: user.nama }))
+        check(password, user[0].password)
+          ? res
+              .status(200)
+              .json(genToken({ _id: user[0]._id, nama: user[0].nama }))
           : res.status(401).json("password salah")
     )
     .catch(() => res.status(400).json("username tidak ada"));

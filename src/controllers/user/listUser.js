@@ -14,5 +14,5 @@ module.exports = (req, res) => {
       });
       res.status(200).json(user);
     })
-    .catch(err => res.status(400).json(err));
+    .catch(() => res.status(400).json("gagal menampilkan list user"));
 };
