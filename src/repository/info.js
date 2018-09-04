@@ -1,7 +1,6 @@
 let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { Info } = require("../models/info");
-let { encrypt } = require("../module/encryption");
 
 exports.tambahInfo = ({ judul, isi, penulis }) => {
   return Info.judul.test(judul) &&
@@ -11,7 +10,7 @@ exports.tambahInfo = ({ judul, isi, penulis }) => {
         col.insert({
           judul,
           isi,
-          penulis,
+          penulis: ObjectID(penulis),
           createAt: new Date(),
           updateAt: new Date(),
           hit: 0
@@ -20,30 +19,62 @@ exports.tambahInfo = ({ judul, isi, penulis }) => {
     : Promise.reject("invalid data");
 };
 
-exports.editUser = (idUser, newData) =>
-  connection("user").then(col =>
+exports.editInfo = (idInfo, newData) =>
+  connection("info").then(col =>
     col
-      .findOne({ _id: ObjectID(idUser) })
-      .then(user => {
-        if (user) {
-          Object.keys(newData).forEach(key => {
-            if (key === "password") user[key] = encrypt(newData[key]);
-            else user[key] = newData[key];
-          });
-          return user;
+      .findOne({ _id: ObjectID(idInfo) })
+      .then(info => {
+        if (info) {
+          Object.keys(newData).forEach(key => (info[key] = newData[key]));
+          info.updateAt = new Date();
+          return info;
         } else {
           return Promise.reject("user tidak ditemukan");
         }
       })
-      .then(user =>
-        col.findOneAndUpdate({ _id: ObjectID(idUser) }, { $set: user })
+      .then(info =>
+        col.findOneAndUpdate({ _id: ObjectID(idInfo) }, { $set: info })
       )
   );
 
-exports.listUser = username =>
-  connection("user").then(col =>
-    col.find(username ? { username } : null).toArray()
-  );
+exports.listInfo = (idInfo, from, limit) => {
+  if (idInfo) {
+    return connection("info").then(col =>
+      col
+        .findOneAndUpdate({ _id: ObjectID(idInfo) }, { $inc: { hit: 1 } })
+        .then(() =>
+          col
+            .aggregate([
+              { $match: { _id: ObjectID(idInfo) } },
+              {
+                $lookup: {
+                  from: "user",
+                  localField: "penulis",
+                  foreignField: "_id",
+                  as: "penulis"
+                }
+              },
+              { $unwind: "$penulis" },
+              {
+                $addFields: { penulis: "$penulis.username" }
+              }
+            ])
+            .toArray()
+        )
+    );
+  } else {
+    return connection("info").then(col =>
+      col
+        .find()
+        .sort({ hit: -1 })
+        .skip(parseInt(from))
+        .limit(parseInt(limit))
+        .toArray()
+    );
+  }
+};
 
-exports.cariUserById = idUser =>
-  connection("user").then(col => col.findOne({ _id: ObjectID(idUser) }));
+exports.hapusInfo = idInfo =>
+  connection("info").then(col =>
+    col.findOneAndDelete({ _id: ObjectID(idInfo) })
+  );
