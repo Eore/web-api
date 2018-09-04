@@ -1,32 +1,26 @@
 module.exports = [
-  // {
-  //   method: "GET",
-  //   url: "/info",
-  //   controller: "info/list",
-  //   privillage: ["*"]
-  // },
   {
     method: "GET",
     url: "/api/v1/info/:id_info?",
     controller: "info/listInfo",
-    privillage: ["*"]
+    privilege: ["*"]
   },
   {
     method: "POST",
     url: "/api/v1/info",
     controller: "info/tambahInfo",
-    privillage: ["admin"]
+    privilege: ["admin"]
   },
-  // {
-  //   method: "PUT",
-  //   url: "/info/:id_info",
-  //   controller: "info/edit",
-  //   privillage: ["user"]
-  // },
+  {
+    method: "PUT",
+    url: "/api/v1/info/:id_info",
+    controller: "info/editInfo",
+    privilege: ["admin"]
+  },
   {
     method: "DELETE",
     url: "/api/v1/info/:id_info",
     controller: "info/hapusInfo",
-    privillage: ["admin"]
+    privilege: ["admin"]
   }
 ];
