@@ -40,9 +40,13 @@ exports.editUser = (idUser, newData) =>
       )
   );
 
-exports.listUser = username =>
+exports.listUser = (username, from, limit) =>
   connection("user").then(col =>
-    col.find(username ? { username } : null).toArray()
+    col
+      .find(username ? { username } : null)
+      .skip(parseInt(from))
+      .limit(parseInt(limit))
+      .toArray()
   );
 
 exports.cariUserById = idUser =>
