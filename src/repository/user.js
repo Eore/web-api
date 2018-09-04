@@ -51,3 +51,8 @@ exports.listUser = (username, from, limit) =>
 
 exports.cariUserById = idUser =>
   connection("user").then(col => col.findOne({ _id: ObjectID(idUser) }));
+
+exports.checkPrivilege = (idUser, role) =>
+  connection("user")
+    .then(col => col.findOne({ _id: ObjectID(idUser) }))
+    .then(user => role.map(el => el === user.role).indexOf(true) !== -1);
