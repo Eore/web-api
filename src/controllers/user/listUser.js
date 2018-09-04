@@ -2,7 +2,8 @@ let { listUser } = require("../../repository/user");
 
 module.exports = (req, res) => {
   let { username } = req.params;
-  listUser(username ? username : null)
+  let { from, limit } = req.query;
+  listUser(username ? username : null, from, limit)
     .then(user => {
       user = user.map(({ username, nama, email, role }) => {
         return {
