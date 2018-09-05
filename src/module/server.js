@@ -13,4 +13,4 @@ app = require("./router")(app, apiDir, controllerDir);
 exports.start = () =>
   http
     .createServer(app)
-    .listen(port, () => console.log(`Server run in port ${port}`));
+    .listen(port, () => console.log(`Server berjalan di ${port}`));
