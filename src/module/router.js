@@ -1,5 +1,4 @@
 let fs = require("fs");
-// let checkPrivillage = require("./checkPrivillage");
 let { checkPrivilege } = require("../repository/user");
 let { verifyToken } = require("../module/token");
 
