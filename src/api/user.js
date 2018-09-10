@@ -3,7 +3,7 @@ module.exports = [
     method: "GET",
     url: "/api/v1/user/:username?",
     controller: "user/listUser",
-    privilege: ["user", "admin"]
+    privilege: ["admin"]
   },
   {
     method: "POST",
