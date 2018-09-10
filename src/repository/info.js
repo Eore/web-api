@@ -2,7 +2,7 @@ let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { Info } = require("../models/info");
 
-exports.tambahInfo = ({ judul, isi, penulis }) => {
+exports.tambahInfo = ({ judul, isi, penulis, gambar }) => {
   return Info.judul.test(judul) &&
     Info.isi.test(isi) &&
     Info.penulis.test(penulis)
@@ -11,6 +11,7 @@ exports.tambahInfo = ({ judul, isi, penulis }) => {
           judul,
           isi,
           penulis: ObjectID(penulis),
+          gambar,
           createAt: new Date(),
           updateAt: new Date(),
           hit: 0
@@ -37,7 +38,7 @@ exports.editInfo = (idInfo, newData) =>
       )
   );
 
-exports.listInfo = (idInfo, from, limit) => {
+exports.listInfo = (idInfo, from, limit, byHit = false) => {
   if (idInfo) {
     return connection("info").then(col =>
       col
@@ -65,10 +66,23 @@ exports.listInfo = (idInfo, from, limit) => {
   } else {
     return connection("info").then(col =>
       col
-        .find()
-        .sort({ hit: -1 })
-        .skip(parseInt(from))
-        .limit(parseInt(limit))
+        .aggregate([
+          { $sort: byHit ? { hit: -1 } : { createAt: -1 } },
+          { $skip: from ? parseInt(from) : 0 },
+          { $limit: limit ? parseInt(limit) : 20 },
+          {
+            $lookup: {
+              from: "user",
+              localField: "penulis",
+              foreignField: "_id",
+              as: "penulis"
+            }
+          },
+          { $unwind: "$penulis" },
+          {
+            $addFields: { penulis: "$penulis.username" }
+          }
+        ])
         .toArray()
     );
   }

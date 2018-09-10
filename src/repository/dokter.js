@@ -2,7 +2,7 @@ let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { Dokter } = require("../models/dokter");
 
-exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
+exports.tambahDokter = ({ nama, spesialis, foto, jadwal }) => {
   jadwal = jadwal.map(val => {
     return {
       _id: ObjectID(),
@@ -29,6 +29,7 @@ exports.tambahDokter = ({ nama, spesialis, jadwal }) => {
         col.insert({
           nama,
           spesialis,
+          foto,
           jadwal
         })
       )
