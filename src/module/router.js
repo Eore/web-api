@@ -13,11 +13,17 @@ module.exports = (app, apiDir, controllerDir) => {
           if (val.privilege.indexOf("*") !== -1) {
             next();
           } else if (token) {
-            let idUser = verifyToken(req.headers.user_token)._id;
-            checkPrivilege(idUser, val.privilege).then(
-              passed =>
-                passed ? next() : res.status(401).json("akses ditolak")
-            );
+            let idUser;
+            try {
+              idUser = verifyToken(req.headers.user_token)._id;
+            } catch (err) {
+              res.status(401).json("token tidak valid");
+            } finally {
+              checkPrivilege(idUser, val.privilege).then(
+                passed =>
+                  passed ? next() : res.status(401).json("akses ditolak")
+              );
+            }
           } else {
             res.status(401).json("token tidak valid");
           }
