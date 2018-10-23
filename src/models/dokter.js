@@ -4,6 +4,6 @@ exports.Dokter = {
   jadwal: {
     hari: /\bsenin\b|\bselasa\b|\brabu\b|\bkamis\b|\bjumat\b|\bsabtu\b/,
     mulai: /\b\d+\.\d+\b/,
-    selesai: /\b\d+\.\d+\b/
+    selesai: /(\b\d+\.\d+\b)|(\bselesai\b)/
   }
 };
