@@ -3,7 +3,7 @@ let { tambahUser, listUser } = require("../../repository/user");
 module.exports = (req, res) => {
   let { username, password, nama, email } = req.body;
   listUser(username)
-    .then(user => (!user ? Promise.resolve() : Promise.reject()))
+    .then(user => (user.length === 0 ? Promise.resolve() : Promise.reject()))
     .then(() =>
       tambahUser({
         username,
