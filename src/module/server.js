@@ -1,4 +1,4 @@
-let https = require("https");
+let https = require("http");
 let express = require("express");
 let app = express();
 let fs = require("fs");
@@ -13,12 +13,6 @@ app = require("./middleware")(app);
 app = require("./router")(app, apiDir, controllerDir);
 
 exports.start = () =>
-  https
-    .createServer(
-      {
-        cert: fs.readFileSync(process.cwd() + "/client-cert.pem").toString(),
-        key: fs.readFileSync(process.cwd() + "/client-key.pem").toString()
-      },
-      app
-    )
+  http
+    .createServer(app)
     .listen(port, () => console.log(`Server berjalan di ${port}`));
