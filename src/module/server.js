@@ -1,4 +1,4 @@
-let https = require("https");
+let http = require("http");
 let express = require("express");
 let app = express();
 let fs = require("fs");
@@ -13,12 +13,6 @@ app = require("./middleware")(app);
 app = require("./router")(app, apiDir, controllerDir);
 
 exports.start = () =>
-  https
-    .createServer(
-      {
-        cert: process.cwd() + "/fullchain.pem",
-        key: process.cwd() + "/privkey.pem"
-      },
-      app
-    )
+  http
+    .createServer(app)
     .listen(port, "0.0.0.0", () => console.log(`Server berjalan di ${port}`));
