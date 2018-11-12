@@ -2,7 +2,7 @@ let { editUser, cariUserById } = require("../../repository/user");
 let { verifyToken } = require("../../module/token");
 
 module.exports = (req, res) => {
-  let token = req.headers.Authorization;
+  let token = req.headers.authorization;
   let data = req.body;
   let { _id } = verifyToken(token);
   cariUserById(_id)

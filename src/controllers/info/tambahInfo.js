@@ -3,7 +3,7 @@ let { verifyToken } = require("../../module/token");
 
 module.exports = (req, res) => {
   let { judul, isi, label } = req.body;
-  let idUser = verifyToken(req.headers.Authorization)._id;
+  let idUser = verifyToken(req.headers.authorization)._id;
   let gambar = req.file.filename;
   tambahInfo({
     judul,

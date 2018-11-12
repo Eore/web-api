@@ -1,7 +1,7 @@
 let { genToken, verifyToken } = require("../../module/token");
 
 module.exports = (req, res) => {
-  let token = req.headers.Authorization;
+  let token = req.headers.authorization;
   try {
     let { _id, nama } = verifyToken(token);
     res.status(200).json(genToken({ _id, nama }));

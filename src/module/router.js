@@ -9,13 +9,13 @@ module.exports = (app, apiDir, controllerDir) => {
       app[val.method.toLowerCase()](
         val.url,
         (req, res, next) => {
-          let token = req.headers.Authorization;
+          let token = req.headers.authorization;
           if (val.privilege.indexOf("*") !== -1) {
             next();
           } else if (token) {
             let idUser;
             try {
-              idUser = verifyToken(req.headers.Authorization)._id;
+              idUser = verifyToken(req.headers.authorization)._id;
             } catch (err) {
               res.status(401).json("token tidak valid");
             } finally {
