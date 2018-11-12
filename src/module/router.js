@@ -9,19 +9,18 @@ module.exports = (app, apiDir, controllerDir) => {
       app[val.method.toLowerCase()](
         val.url,
         (req, res, next) => {
-          let token = req.headers.user_token;
+          let token = req.headers.Authorization;
           if (val.privilege.indexOf("*") !== -1) {
             next();
           } else if (token) {
             let idUser;
             try {
-              idUser = verifyToken(req.headers.user_token)._id;
+              idUser = verifyToken(req.headers.Authorization)._id;
             } catch (err) {
               res.status(401).json("token tidak valid");
             } finally {
-              checkPrivilege(idUser, val.privilege).then(
-                passed =>
-                  passed ? next() : res.status(401).json("akses ditolak")
+              checkPrivilege(idUser, val.privilege).then(passed =>
+                passed ? next() : res.status(401).json("akses ditolak")
               );
             }
           } else {
