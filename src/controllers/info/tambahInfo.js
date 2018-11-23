@@ -4,12 +4,12 @@ let { verifyToken } = require("../../module/token");
 module.exports = (req, res) => {
   let { judul, isi, label } = req.body;
   let idUser = verifyToken(req.headers.authorization)._id;
-  let gambar = req.file.filename;
+  let { filename } = req.files.gambar[0];
   tambahInfo({
     judul,
     isi,
     penulis: idUser,
-    gambar,
+    gambar: filename,
     label
   })
     .then(doc => res.status(201).json(doc.ops[0]))

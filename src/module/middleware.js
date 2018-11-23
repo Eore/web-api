@@ -15,7 +15,8 @@ module.exports = app => {
   //     credentials: true
   //   })
   // );
-  app.use(upload.single("foto"));
+  // app.use(upload.single("foto"));
+  app.use(upload.fields([{ name: "foto" }, { name: "gambar" }]));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   return app;
