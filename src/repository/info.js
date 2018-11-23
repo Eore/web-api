@@ -2,10 +2,11 @@ let { connection } = require("../module/database");
 let ObjectID = require("mongodb").ObjectID;
 let { Info } = require("../models/info");
 
-exports.tambahInfo = ({ judul, isi, penulis, gambar }) => {
+exports.tambahInfo = ({ judul, isi, penulis, gambar, tag }) => {
   return Info.judul.test(judul) &&
     Info.isi.test(isi) &&
-    Info.penulis.test(penulis)
+    Info.penulis.test(penulis) &&
+    Info.tag.test(tag)
     ? connection("info").then(col =>
         col.insert({
           judul,
@@ -14,7 +15,8 @@ exports.tambahInfo = ({ judul, isi, penulis, gambar }) => {
           gambar,
           createAt: new Date(),
           updateAt: new Date(),
-          hit: 0
+          hit: 0,
+          tag
         })
       )
     : Promise.reject("invalid data");

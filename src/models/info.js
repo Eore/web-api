@@ -3,5 +3,6 @@ exports.Info = {
   isi: /[^]{2,}/,
   judul: /[^]{2,}/,
   penulis: /^(\w+){4,}$/,
-  hit: /\d/
+  hit: /\d/,
+  tag: /\bberita\b|\bpromosi\b/
 };
