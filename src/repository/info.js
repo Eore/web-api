@@ -40,7 +40,7 @@ exports.editInfo = (idInfo, newData) =>
       )
   );
 
-exports.listInfo = ({ idInfo, from, limit, byHit, label }) => {
+exports.listInfo = ({ idInfo, from, limit, byHit, tag }) => {
   if (idInfo) {
     return connection("info").then(col =>
       col
@@ -69,7 +69,7 @@ exports.listInfo = ({ idInfo, from, limit, byHit, label }) => {
     return connection("info").then(col =>
       col
         .aggregate([
-          { $match: { label: label ? label : { $exists: false } } },
+          { $match: { tag: tag ? tag : { $exists: false } } },
           { $sort: byHit === "true" ? { hit: -1 } : { createAt: -1 } },
           { $skip: from ? parseInt(from) : 0 },
           { $limit: limit ? parseInt(limit) : 20 },
